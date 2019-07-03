@@ -48,7 +48,7 @@ def last_years_mse(y,results):
     pred=results.get_prediction(start=y.size-12,dynamic=False)
 
     y_forecasted = pred.predicted_mean
-    y_truth = y[y.size-12:]
+    y_truth = y[-12:]
 
     # Compute the mean square error
     mse = ((y_forecasted - y_truth) ** 2).mean()
