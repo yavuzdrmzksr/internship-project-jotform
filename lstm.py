@@ -1,5 +1,3 @@
-from pandas import read_csv
-from numpy import array
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
