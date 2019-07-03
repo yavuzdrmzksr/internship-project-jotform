@@ -1,8 +1,5 @@
-import warnings
 import itertools
 import statsmodels.api as sm
-
-warnings.filterwarnings("ignore")
 
 ###############################################################################
 
