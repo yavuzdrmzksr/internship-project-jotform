@@ -1,6 +1,10 @@
 import scipy as sc
 from scipy import signal
 import numpy as np
+import matplotlib.pyplot as plt
+import warnings
+
+warnings.filterwarnings('ignore')
 
 ###############################################################################
 
@@ -38,3 +42,36 @@ def last_years_rmse(y,pred):
 
 def next_month(pred):
     return pred[-1]
+
+###############################################################################
+
+def plot_last_year(y,pred,title,filename,x_label="Months",y_label="Value"):
+    t = np.arange(12)
+    plt.plot(t, pred[-13:-1], label='Predictions')
+    plt.plot(t, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)
+
+###############################################################################
+
+def plot_next_month(y,pred,title,filename,x_label="Months",y_label="Value"):
+    t1 = np.arange(12)
+    t2 = np.arange(13)
+    plt.plot(t2, pred[-13:], label='Predictions')
+    plt.plot(t1, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)

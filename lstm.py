@@ -1,7 +1,12 @@
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
+import matplotlib.pyplot as plt
+import numpy as np
 from numpy import array
+import warnings
+
+warnings.filterwarnings('ignore')
 
 ###############################################################################
 
@@ -43,7 +48,7 @@ def last_years_rmse(raw_seq,model,n_steps=12):
     n_features = 1
     y_forecasted = []
     for i in range(-24,-12):
-        x_input = raw_seq[i:i+12]
+        x_input = raw_seq[i:i+n_steps]
         x_input = x_input.reshape((1, n_steps, n_features))
         y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
     y_truth=raw_seq[-12:]
@@ -58,3 +63,56 @@ def next_month(raw_seq,model,n_steps=12):
     x_input = raw_seq[-n_steps:]
     x_input = x_input.reshape((1, n_steps, n_features))
     return model.predict(x_input, verbose=0)[0][0]
+
+###############################################################################
+
+def plot_last_year(raw_seq,model,title,filename,x_label="Months",y_label="Value",n_steps=12):
+	n_features = 1
+	t = np.arange(12)
+
+	y_forecasted = []
+	for i in range(-24,-12):
+		x_input = raw_seq[i:i+n_steps]
+		x_input = x_input.reshape((1, n_steps, n_features))
+		y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
+
+	plt.plot(t, y_forecasted, label='Predictions')
+	plt.plot(t, raw_seq[-12:], label='Observations')
+
+	plt.xlabel(x_label)
+	plt.ylabel(y_label)
+
+	plt.title(title)
+
+	plt.legend()
+
+	plt.savefig(filename)
+
+###############################################################################
+
+def plot_next_month(raw_seq,model,title,filename,x_label="Months",y_label="Value",n_steps=12):
+	n_features = 1
+
+	t1 = np.arange(12)
+	t2 = np.arange(13)
+
+	y_forecasted = []
+	for i in range(-24,-12):
+		x_input = raw_seq[i:i+n_steps]
+		x_input = x_input.reshape((1, n_steps, n_features))
+		y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
+	x_input = raw_seq[-n_steps:]
+	x_input = x_input.reshape((1, n_steps, n_features))
+	y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
+
+	plt.plot(t2, y_forecasted, label='Predictions')
+	plt.plot(t1, raw_seq[-12:], label='Observations')
+
+	plt.xlabel(x_label)
+	plt.ylabel(y_label)
+
+	plt.title(title)
+
+	plt.legend()
+
+	plt.savefig(filename)

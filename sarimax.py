@@ -1,5 +1,10 @@
 import itertools
 import statsmodels.api as sm
+import numpy as np
+import matplotlib.pyplot as plt
+import warnings
+
+warnings.filterwarnings('ignore')
 
 ###############################################################################
 
@@ -58,3 +63,44 @@ def last_years_rmse(y,results):
 def next_month(results):
     pred=results.get_forecast(steps=1)
     return pred.predicted_mean[0]
+
+###############################################################################
+
+def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
+    t = np.arange(12)
+
+    pred=results.get_prediction(start=y.size-12,dynamic=False)
+    y_forecasted = pred.predicted_mean
+
+    plt.plot(t, y_forecasted, label='Predictions')
+    plt.plot(t, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)
+
+###############################################################################
+
+def plot_next_month(y,results,title,filename,x_label="Months",y_label="Value"):
+    t1 = np.arange(12)
+    t2 = np.arange(13)
+
+    pred=results.get_prediction(start=y.size-12,dynamic=False)
+    y_forecasted = pred.predicted_mean
+
+    plt.plot(t2, np.append(y_forecasted,results.get_forecast(steps=1).predicted_mean,axis=0), label='Predictions')
+    plt.plot(t1, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)

@@ -1,5 +1,9 @@
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import numpy as np
+import matplotlib.pyplot as plt
+import warnings
+
+warnings.filterwarnings('ignore')
 
 ###############################################################################
 
@@ -41,5 +45,39 @@ def last_years_rmse(y,results):
 
 ###############################################################################
 
-def next_month(results):
-    return results.forecast(1)[0]
+def next_month(y,results):
+    return results.predict(len(y)+1, len(y)+1)
+
+###############################################################################
+
+def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
+    t = np.arange(12)
+    plt.plot(t, results.predict(len(y)-11, len(y)), label='Predictions')
+    plt.plot(t, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)
+
+###############################################################################
+
+def plot_next_month(y,results,title,filename,x_label="Months",y_label="Value"):
+    t1 = np.arange(12)
+    t2 = np.arange(13)
+
+    plt.plot(t2, results.predict(len(y)-11, len(y)+1), label='Predictions')
+    plt.plot(t1, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)
