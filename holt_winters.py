@@ -46,7 +46,7 @@ def last_years_rmse(y,results):
 ###############################################################################
 
 def next_month(y,results):
-    return results.predict(len(y)+1, len(y)+1)
+    return results.predict(len(y)+1, len(y)+1)[0]
 
 ###############################################################################
 
