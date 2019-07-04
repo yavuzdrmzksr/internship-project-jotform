@@ -27,12 +27,11 @@ def fit_model(y, n_predict=1):
 
 ###############################################################################
 
-def last_years_mse(y,pred):
+def last_years_rmse(y,pred):
     y_forecasted = pred[-13:-1]
     y_truth = y[-12:]
 
-    # Compute the mean square error
-    mse = ((y_forecasted - y_truth) ** 2).mean()
+    mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
     return mse
 
 ###############################################################################

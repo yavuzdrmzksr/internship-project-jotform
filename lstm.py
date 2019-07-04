@@ -1,6 +1,7 @@
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
+from numpy import array
 
 ###############################################################################
 
@@ -38,7 +39,7 @@ def fit_model(raw_seq,n_steps=12):
 
 ###############################################################################
 
-def last_years_mse(raw_seq,model,n_steps=12):
+def last_years_rmse(raw_seq,model,n_steps=12):
     n_features = 1
     y_forecasted = []
     for i in range(-24,-12):
@@ -47,8 +48,7 @@ def last_years_mse(raw_seq,model,n_steps=12):
         y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
     y_truth=raw_seq[-12:]
 
-    # Compute the mean square error
-    mse = ((y_forecasted - y_truth) ** 2).mean()
+    mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
     return mse
 
 ###############################################################################

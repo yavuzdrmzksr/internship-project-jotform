@@ -44,14 +44,13 @@ def fit_model(y,pdq_limit=2):
 
 ###############################################################################
 
-def last_years_mse(y,results):
+def last_years_rmse(y,results):
     pred=results.get_prediction(start=y.size-12,dynamic=False)
 
     y_forecasted = pred.predicted_mean
     y_truth = y[-12:]
 
-    # Compute the mean square error
-    mse = ((y_forecasted - y_truth) ** 2).mean()
+    mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
     return mse
 
 ###############################################################################
