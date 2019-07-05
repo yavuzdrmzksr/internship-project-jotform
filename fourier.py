@@ -46,9 +46,9 @@ def next_month(pred):
 
 ###############################################################################
 
-def plot_last_year(y,pred,title,filename,x_label="Months",y_label="Value"):
+def plot_last_year(y,title,filename,x_label="Months",y_label="Value"):
     t = np.arange(12)
-    plt.plot(t, pred[-13:-1], label='Predictions')
+    plt.plot(t, fit_model(y[:-12],n_predict=12)[-12:], label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
     plt.xlabel(x_label)

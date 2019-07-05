@@ -68,10 +68,12 @@ def next_month(raw_seq,model,n_steps=12):
 
 ###############################################################################
 
-def plot_last_year(raw_seq,model,title,filename,x_label="Months",y_label="Value",n_steps=12):
+def plot_last_year(raw_seq,title,filename,x_label="Months",y_label="Value",n_steps=12):
 	n_features = 1
 	t = np.arange(12)
 
+	model=fit_model(raw_seq[:-12],n_steps)
+	n_features = 1
 	y_forecasted = []
 	for i in range(-24,-12):
 		x_input = raw_seq[i:i+n_steps]
