@@ -44,17 +44,19 @@ def fit_model(raw_seq,n_steps=12):
 
 ###############################################################################
 
-def last_years_rmse(raw_seq,model,n_steps=12):
-    n_features = 1
-    y_forecasted = []
-    for i in range(-24,-12):
-        x_input = raw_seq[i:i+n_steps]
-        x_input = x_input.reshape((1, n_steps, n_features))
-        y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
-    y_truth=raw_seq[-12:]
+def last_years_rmse(raw_seq,n_steps=12):
+	model=fit_model(raw_seq[:-12],n_steps)
+	n_features = 1
+	y_forecasted = []
+	for i in range(-24,-12):
+		x_input = raw_seq[i:i+n_steps]
+		x_input = x_input.reshape((1, n_steps, n_features))
+		y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
 
-    mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
-    return mse
+	y_truth=raw_seq[-12:]
+
+	mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
+	return mse
 
 ###############################################################################
 

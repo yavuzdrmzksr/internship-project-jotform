@@ -31,8 +31,9 @@ def fit_model(y, n_predict=1):
 
 ###############################################################################
 
-def last_years_rmse(y,pred):
-    y_forecasted = pred[-13:-1]
+def last_years_rmse(y):
+    y_forecasted = fit_model(y[:-12],n_predict=12)[-12:]
+
     y_truth = y[-12:]
 
     mse = ((y_forecasted - y_truth) ** 2).mean()**0.5

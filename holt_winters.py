@@ -26,7 +26,10 @@ def fit_model(y):
                 else:
                     model = ExponentialSmoothing(pos_y.astype(np.float),trend=tre,seasonal=sea,seasonal_periods=12)
                     results = model.fit()
-                last_rmse=last_years_rmse(y,results)
+                y_forecasted = results.predict(len(y)-11, len(y))
+                y_truth = y[-12:]
+                last_rmse = ((y_forecasted - y_truth) ** 2).mean()**0.5
+
                 if(last_rmse<best_rmse):
                     best_rmse=last_rmse
                     best_results=results
@@ -36,8 +39,9 @@ def fit_model(y):
 
 ###############################################################################
 
-def last_years_rmse(y,results):
-    y_forecasted = results.predict(len(y)-11, len(y))
+def last_years_rmse(y):
+    results = fit_model(y[:-12])
+    y_forecasted = results.predict(len(y)+1, len(y)+12)
     y_truth = y[-12:]
 
     mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
