@@ -49,8 +49,8 @@ def fit_model(y,pdq_limit=2):
 
 ###############################################################################
 
-def last_years_rmse(y):
-    results = fit_model(y[:-12])
+def last_years_rmse(y,results):
+    # results = fit_model(y[:-12])
     pred=results.get_forecast(steps=12)
 
     y_forecasted = pred.predicted_mean
@@ -67,14 +67,14 @@ def next_month(results):
 
 ###############################################################################
 
-def plot_last_year(y,title,filename,x_label="Months",y_label="Value"):
+def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
     t = np.arange(12)
 
-    results = fit_model(y[:-12])
+    # results = fit_model(y[:-12])
     pred=results.get_forecast(steps=12)
 
     y_forecasted = pred.predicted_mean
-
+    plt.figure()
     plt.plot(t, y_forecasted, label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
@@ -95,8 +95,35 @@ def plot_next_month(y,results,title,filename,x_label="Months",y_label="Value"):
 
     pred=results.get_prediction(start=y.size-12,dynamic=False)
     y_forecasted = pred.predicted_mean
-
+    plt.figure()
     plt.plot(t2, np.append(y_forecasted,results.get_forecast(steps=1).predicted_mean,axis=0), label='Predictions')
+    plt.plot(t1, y[-12:], label='Observations')
+
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title)
+
+    plt.legend()
+
+    plt.savefig(filename)
+
+###############################################################################
+
+def next_6_months(results):
+    pred=results.get_forecast(steps=6)
+    return pred.predicted_mean
+
+###############################################################################
+
+def plot_next_6_months(y,results,title,filename,x_label="Months",y_label="Value"):
+    t1 = np.arange(12)
+    t2 = np.arange(18)
+
+    pred=results.get_prediction(start=y.size-12,dynamic=False)
+    y_forecasted = pred.predicted_mean
+    plt.figure()
+    plt.plot(t2, np.append(y_forecasted,results.get_forecast(steps=6).predicted_mean,axis=0), label='Predictions')
     plt.plot(t1, y[-12:], label='Observations')
 
     plt.xlabel(x_label)
