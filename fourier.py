@@ -31,8 +31,9 @@ def fit_model(y, n_predict=1):
 
 ###############################################################################
 
-def last_years_rmse(y):
-    y_forecasted = fit_model(y[:-12],n_predict=12)[-12:]
+def last_years_rmse(y,results):
+    #results=fit_model(y[:-12],n_predict=12)
+    y_forecasted = results[-12:]
 
     y_truth = y[-12:]
 
@@ -42,14 +43,16 @@ def last_years_rmse(y):
 ###############################################################################
 
 def next_month(pred):
+    #pred=fit_model(y[:-1])
     return pred[-1]
 
 ###############################################################################
 
-def plot_last_year(y,title,filename,x_label="Months",y_label="Value"):
+def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
     t = np.arange(12)
+    #results=fit_model(y[:-12],n_predict=12)
     plt.figure()
-    plt.plot(t, fit_model(y[:-12],n_predict=12)[-12:], label='Predictions')
+    plt.plot(t, results[-12:], label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
     plt.xlabel(x_label)
@@ -63,34 +66,17 @@ def plot_last_year(y,title,filename,x_label="Months",y_label="Value"):
 
 ###############################################################################
 
-def plot_next_month(y,pred,title,filename,x_label="Months",y_label="Value"):
-    t1 = np.arange(12)
-    t2 = np.arange(13)
-    plt.figure()
-    plt.plot(t2, pred[-13:], label='Predictions')
-    plt.plot(t1, y[-12:], label='Observations')
-
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-
-    plt.title(title)
-
-    plt.legend()
-
-    plt.savefig(filename)
+def next_6_months(pred):
+    return pred[-6:]
 
 ###############################################################################
 
-def next_6_months(y):
-    return fit_model(y,6)[-6:]
-
-###############################################################################
-
-def plot_next_6_months(y,title,filename,x_label="Months",y_label="Value"):
+def plot_next_6_months(y,pred,title,filename,x_label="Months",y_label="Value"):
+    #pred=fit_model(y,6)
     t1 = np.arange(12)
     t2 = np.arange(18)
     plt.figure()
-    plt.plot(t2, fit_model(y,6)[-18:], label='Predictions')
+    plt.plot(t2, pred[-18:], label='Predictions')
     plt.plot(t1, y[-12:], label='Observations')
 
     plt.xlabel(x_label)

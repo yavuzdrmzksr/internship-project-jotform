@@ -39,9 +39,9 @@ def fit_model(y):
 
 ###############################################################################
 
-def last_years_rmse(y):
-    results = fit_model(y[:-12])
-    y_forecasted = results.predict(len(y)+1, len(y)+12)
+def last_years_rmse(y,results):
+    #results = fit_model(y[:-12])
+    y_forecasted = results.forecast(12)
     y_truth = y[-12:]
 
     mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
@@ -49,16 +49,16 @@ def last_years_rmse(y):
 
 ###############################################################################
 
-def next_month(y,results):
-    return results.predict(len(y)+1, len(y)+1)[0]
+def next_month(results):
+    return results.forecast(1)[0]
 
 ###############################################################################
 
-def plot_last_year(y,title,filename,x_label="Months",y_label="Value"):
+def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
     t = np.arange(12)
-    results = fit_model(y[:-12])
+    #results = fit_model(y[:-12])
     plt.figure()
-    plt.plot(t, results.predict(len(y)+1, len(y)+12), label='Predictions')
+    plt.plot(t, results.forecast(12), label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
     plt.xlabel(x_label)
@@ -72,26 +72,8 @@ def plot_last_year(y,title,filename,x_label="Months",y_label="Value"):
 
 ###############################################################################
 
-def plot_next_month(y,results,title,filename,x_label="Months",y_label="Value"):
-    t1 = np.arange(12)
-    t2 = np.arange(13)
-    plt.figure()
-    plt.plot(t2, results.predict(len(y)-11, len(y)+1), label='Predictions')
-    plt.plot(t1, y[-12:], label='Observations')
-
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-
-    plt.title(title)
-
-    plt.legend()
-
-    plt.savefig(filename)
-
-###############################################################################
-
-def next_6_months(y,results):
-    return results.predict(len(y)+1, len(y)+6)
+def next_6_months(results):
+    return results.forecast(6)
 
 ###############################################################################
 

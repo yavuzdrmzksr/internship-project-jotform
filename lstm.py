@@ -94,35 +94,6 @@ def plot_last_year(raw_seq,model,title,filename,x_label="Months",y_label="Value"
 
 ###############################################################################
 
-def plot_next_month(raw_seq,model,title,filename,x_label="Months",y_label="Value",n_steps=12):
-	n_features = 1
-
-	t1 = np.arange(12)
-	t2 = np.arange(13)
-
-	y_forecasted = []
-	for i in range(-24,-12):
-		x_input = raw_seq[i:i+n_steps]
-		x_input = x_input.reshape((1, n_steps, n_features))
-		y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
-	x_input = raw_seq[-n_steps:]
-	x_input = x_input.reshape((1, n_steps, n_features))
-	y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
-	plt.figure()
-	plt.plot(t2, y_forecasted, label='Predictions')
-	plt.plot(t1, raw_seq[-12:], label='Observations')
-
-	plt.xlabel(x_label)
-	plt.ylabel(y_label)
-
-	plt.title(title)
-
-	plt.legend()
-
-	plt.savefig(filename)
-
-###############################################################################
-
 def next_6_months(raw_seq,model,n_steps=12):
 	n_features = 1
 	x_input = raw_seq[-n_steps:]
