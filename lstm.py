@@ -56,7 +56,10 @@ def last_years_rmse(raw_seq,model,n_steps=12):
 	y_truth=raw_seq[-12:]
 
 	mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
-	return mse
+	x=sorted(abs((y_forecasted - y_truth)))
+	mean = abs((y_forecasted - y_truth)).mean()
+	std = abs((y_forecasted - y_truth)).std()
+	return (mse,mean,std,(x[-3])*2.5-(x[2])*1.5)
 
 ###############################################################################
 

@@ -45,7 +45,10 @@ def last_years_rmse(y,results):
     y_truth = y[-12:]
 
     mse = ((y_forecasted - y_truth) ** 2).mean()**0.5
-    return mse
+    x=sorted(abs((y_forecasted - y_truth)))
+    mean = abs((y_forecasted - y_truth)).mean()
+    std = abs((y_forecasted - y_truth)).std()
+    return (mse,mean,std,(x[-3])*2.5-(x[2])*1.5)
 
 ###############################################################################
 
@@ -81,7 +84,7 @@ def plot_next_6_months(y,results,title,filename,x_label="Months",y_label="Value"
     t1 = np.arange(12)
     t2 = np.arange(18)
     plt.figure()
-    plt.plot(t2, results.predict(len(y)-11, len(y)+6), label='Predictions')
+    plt.plot(t2, results.predict(len(y)-12, len(y)+5), label='Predictions')
     plt.plot(t1, y[-12:], label='Observations')
 
     plt.xlabel(x_label)
