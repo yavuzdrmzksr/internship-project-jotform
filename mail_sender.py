@@ -27,16 +27,16 @@ def mail_values(filename):
     last_years_months_2=[]
     last_year_and_next_6_months=[]
 
-    for i in range(-12,7):
+    for i in range(-13,6):
         if((current_date+i)%12)<9:
             pre="0"
         else:
             pre=""
-        if(i>-12):
+        if(i>-13):
             last_year_and_next_6_months.append(str(int((current_date+i)/12))+"-"+pre+str(((current_date+i)%12)+1))
-        if(i<0):
+        if(i<-1):
             last_years_months_1.append(str(int((current_date+i)/12))+"-"+pre+str(((current_date+i)%12)+1))
-        if(i>-12 and i<1):
+        if(i>-13 and i<0):
             last_years_months_2.append(str(int((current_date+i)/12))+"-"+pre+str(((current_date+i)%12)+1))
 
     preds=[]
