@@ -57,10 +57,9 @@ def next_month(results):
 
 ###############################################################################
 
-def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
-    t = np.arange(12)
+def plot_last_year(y,results,title,filename,t,x_label="Months",y_label="Value"):
     #results = fit_model(y[:-12])
-    plt.figure()
+    plt.figure(figsize=(12.8,4.8))
     plt.plot(t, results.forecast(12), label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
@@ -80,10 +79,8 @@ def next_6_months(results):
 
 ###############################################################################
 
-def plot_next_6_months(y,results,title,filename,x_label="Months",y_label="Value"):
-    t1 = np.arange(12)
-    t2 = np.arange(18)
-    plt.figure()
+def plot_next_6_months(y,results,title,filename,t1,t2,x_label="Months",y_label="Value"):
+    plt.figure(figsize=(16.0,4.8))
     plt.plot(t2, results.predict(len(y)-12, len(y)+5), label='Predictions')
     plt.plot(t1, y[-12:], label='Observations')
 

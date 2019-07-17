@@ -20,60 +20,77 @@ warnings.filterwarnings('ignore')
 def mail_values(filename):
     raw_seq = read_csv(filename, parse_dates =["Category"], index_col ="Category")
     raw_seq = raw_seq.resample('MS').mean()
+    current_date=raw_seq.index[-1].year*12+raw_seq.index[-1].month
     raw_seq = array(raw_seq.interpolate()).flatten()
+
+    last_years_months_1=[]
+    last_years_months_2=[]
+    last_year_and_next_6_months=[]
+
+    for i in range(-12,7):
+        if((current_date+i)%12)<9:
+            pre="0"
+        else:
+            pre=""
+        if(i>-12):
+            last_year_and_next_6_months.append(str(int((current_date+i)/12))+"-"+pre+str(((current_date+i)%12)+1))
+        if(i<0):
+            last_years_months_1.append(str(int((current_date+i)/12))+"-"+pre+str(((current_date+i)%12)+1))
+        if(i>-12 and i<1):
+            last_years_months_2.append(str(int((current_date+i)/12))+"-"+pre+str(((current_date+i)%12)+1))
 
     preds=[]
 
     mod = fourier.fit_model(raw_seq[:-13],12)
     rmse,mean,std,iqrlimit = fourier.last_years_rmse(raw_seq[:-1],mod)
-    fourier.plot_last_year(raw_seq[:-1],mod,title="Fourier Analysis Model - Test with Previous Data",filename="fourier-test.png")
+    fourier.plot_last_year(raw_seq[:-1],mod,"Fourier Analysis Model - Test with Previous Data","fourier-test.png",last_years_months_1)
     mod = fourier.fit_model(raw_seq[:-1])
     next_month = fourier.next_month(mod)
     mod = fourier.fit_model(raw_seq)
     next_6_months = list(map(round,fourier.next_6_months(mod)))
     z = (abs(next_month-raw_seq[-1])-mean)/std
-    fourier.plot_next_6_months(raw_seq,mod,title="Fourier Analysis Model - Predictions of Next 6 Months",filename="fourier-pred.png")
+    fourier.plot_next_6_months(raw_seq,mod,"Fourier Analysis Model - Predictions of Next 6 Months","fourier-pred.png",last_years_months_2,last_year_and_next_6_months)
     preds.append(("Fourier Analysis Model",round(rmse),"fourier-test.png",round(next_month),round(raw_seq[-1]),round(abs(next_month-raw_seq[-1])),round(abs(next_month-raw_seq[-1])/raw_seq[-1]*100,2),next_6_months,"fourier-pred.png",z>3.5,abs(next_month-raw_seq[-1])>iqrlimit))
 
     mod = holt_winters.fit_model(raw_seq[:-13])
     rmse,mean,std,iqrlimit = holt_winters.last_years_rmse(raw_seq[:-1],mod)
-    holt_winters.plot_last_year(raw_seq[:-1],mod,title="Holt-Winters Model - Test with Previous Data",filename="hw-test.png")
+    holt_winters.plot_last_year(raw_seq[:-1],mod,"Holt-Winters Model - Test with Previous Data","hw-test.png",last_years_months_1)
     mod = holt_winters.fit_model(raw_seq[:-1])
     next_month = holt_winters.next_month(mod)
     mod = holt_winters.fit_model(raw_seq)
     next_6_months = list(map(round,holt_winters.next_6_months(mod)))
     z = (abs(next_month-raw_seq[-1])-mean)/std
-    holt_winters.plot_next_6_months(raw_seq,mod,title="Holt-Winters Model - Predictions of Next 6 Months",filename="hw-pred.png")
+    holt_winters.plot_next_6_months(raw_seq,mod,"Holt-Winters Model - Predictions of Next 6 Months","hw-pred.png",last_years_months_2,last_year_and_next_6_months)
     preds.append(("Holt-Winters Model",round(rmse),"hw-test.png",round(next_month),round(raw_seq[-1]),round(abs(next_month-raw_seq[-1])),round(abs(next_month-raw_seq[-1])/raw_seq[-1]*100,2),next_6_months,"hw-pred.png",z>3.5,abs(next_month-raw_seq[-1])>iqrlimit))
 
     mod = lstm.fit_model(raw_seq[:-13])
     rmse,mean,std,iqrlimit = lstm.last_years_rmse(raw_seq[:-1],mod)
-    lstm.plot_last_year(raw_seq[:-1],mod,title="LSTM Network Model - Test with Previous Data",filename="lstm-test.png")
+    lstm.plot_last_year(raw_seq[:-1],mod,"LSTM Network Model - Test with Previous Data","lstm-test.png",last_years_months_1)
     mod = lstm.fit_model(raw_seq[:-1])
     next_month = lstm.next_month(raw_seq[:-1],mod)
     mod = lstm.fit_model(raw_seq)
     next_6_months = list(map(round,lstm.next_6_months(raw_seq,mod)))
     z = (abs(next_month-raw_seq[-1])-mean)/std
-    lstm.plot_next_6_months(raw_seq,mod,title="LSTM Network Model - Predictions of Next 6 Months",filename="lstm-pred.png")
+    lstm.plot_next_6_months(raw_seq,mod,"LSTM Network Model - Predictions of Next 6 Months","lstm-pred.png",last_years_months_2,last_year_and_next_6_months)
     preds.append(("LSTM Network Model",round(rmse),"lstm-test.png",round(next_month),round(raw_seq[-1]),round(abs(next_month-raw_seq[-1])),round(abs(next_month-raw_seq[-1])/raw_seq[-1]*100,2),next_6_months,"lstm-pred.png",z>3.5,abs(next_month-raw_seq[-1])>iqrlimit))
 
     mod = sarimax.fit_model(raw_seq[:-13])
     rmse,mean,std,iqrlimit = sarimax.last_years_rmse(raw_seq[:-1],mod)
-    sarimax.plot_last_year(raw_seq[:-1],mod,title="Sarimax Model - Test with Previous Data",filename="sarimax-test.png")
+    sarimax.plot_last_year(raw_seq[:-1],mod,"Sarimax Model - Test with Previous Data","sarimax-test.png",last_years_months_1)
     mod = sarimax.fit_model(raw_seq[:-1])
     next_month = sarimax.next_month(mod)
     mod = sarimax.fit_model(raw_seq)
     next_6_months = list(map(round,sarimax.next_6_months(mod)))
     z = (abs(next_month-raw_seq[-1])-mean)/std
-    sarimax.plot_next_6_months(raw_seq,mod,title="Sarimax Model - Predictions of Next 6 Months",filename="sarimax-pred.png")
+    sarimax.plot_next_6_months(raw_seq,mod,"Sarimax Model - Predictions of Next 6 Months","sarimax-pred.png",last_years_months_2,last_year_and_next_6_months)
     preds.append(("Sarimax Model",round(rmse),"sarimax-test.png",round(next_month),round(raw_seq[-1]),round(abs(next_month-raw_seq[-1])),round(abs(next_month-raw_seq[-1])/raw_seq[-1]*100,2),next_6_months,"sarimax-pred.png",z>3.5,abs(next_month-raw_seq[-1])>iqrlimit))
 
-    return sorted(preds,key=lambda x : x[1])
+    return sorted(preds,key=lambda x : x[1]),last_year_and_next_6_months[-6:]
 
 ###############################################################################
 
 def mail_text(filename,m1="m1.html",m2="m2.html",m3="m3.html",currency_symbol=""):
-    vals=mail_values(filename)
+    vals,month_replace=mail_values(filename)
     h=open(m1,"r")
     text1 = h.read().replace("%FILENAME%",filename)
     images=[]
@@ -94,6 +111,7 @@ def mail_text(filename,m1="m1.html",m2="m2.html",m3="m3.html",currency_symbol=""
         s=s.replace("%DIFFERENCE%",currency_symbol+'{:,}'.format(int(error)))
         s=s.replace("%PDIFFERENCE%",'{:,}'.format(perror))
         for i in range(6):
+            s=s.replace("%MONTH"+str(i)+"%",month_replace[i])
             s=s.replace("%PREDICTION"+str(i)+"%",currency_symbol+'{:,}'.format(int(pred6[i])))
         images.append(predimg)
         s=s.replace("%PREDIMG%","cid:"+str(c))

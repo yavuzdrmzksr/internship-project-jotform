@@ -2,6 +2,7 @@ import scipy as sc
 from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import date
 import warnings
 
 warnings.filterwarnings('ignore')
@@ -51,10 +52,9 @@ def next_month(pred):
 
 ###############################################################################
 
-def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
-    t = np.arange(12)
+def plot_last_year(y,results,title,filename,t,x_label="Months",y_label="Value"):
     #results=fit_model(y[:-12],n_predict=12)
-    plt.figure()
+    plt.figure(figsize=(12.8,4.8))
     plt.plot(t, results[-12:], label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
@@ -74,11 +74,9 @@ def next_6_months(pred):
 
 ###############################################################################
 
-def plot_next_6_months(y,pred,title,filename,x_label="Months",y_label="Value"):
+def plot_next_6_months(y,pred,title,filename,t1,t2,x_label="Months",y_label="Value"):
     #pred=fit_model(y,6)
-    t1 = np.arange(12)
-    t2 = np.arange(18)
-    plt.figure()
+    plt.figure(figsize=(16.0,4.8))
     plt.plot(t2, pred[-18:], label='Predictions')
     plt.plot(t1, y[-12:], label='Observations')
 

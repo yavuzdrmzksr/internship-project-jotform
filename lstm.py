@@ -71,10 +71,9 @@ def next_month(raw_seq,model,n_steps=12):
 
 ###############################################################################
 
-def plot_last_year(raw_seq,model,title,filename,x_label="Months",y_label="Value",n_steps=12):
+def plot_last_year(raw_seq,model,title,filename,t,x_label="Months",y_label="Value",n_steps=12):
 	# model=fit_model(raw_seq[:-12],n_steps)
 	n_features = 1
-	t = np.arange(12)
 
 	n_features = 1
 	y_forecasted = []
@@ -82,7 +81,7 @@ def plot_last_year(raw_seq,model,title,filename,x_label="Months",y_label="Value"
 		x_input = raw_seq[i:i+n_steps]
 		x_input = x_input.reshape((1, n_steps, n_features))
 		y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
-	plt.figure()
+	plt.figure(figsize=(12.8,4.8))
 	plt.plot(t, y_forecasted, label='Predictions')
 	plt.plot(t, raw_seq[-12:], label='Observations')
 
@@ -110,11 +109,8 @@ def next_6_months(raw_seq,model,n_steps=12):
 
 ###############################################################################
 
-def plot_next_6_months(raw_seq,model,title,filename,x_label="Months",y_label="Value",n_steps=12):
+def plot_next_6_months(raw_seq,model,title,filename,t1,t2,x_label="Months",y_label="Value",n_steps=12):
 	n_features = 1
-
-	t1 = np.arange(12)
-	t2 = np.arange(18)
 
 	y_forecasted = []
 	for i in range(-24,-12):
@@ -123,7 +119,7 @@ def plot_next_6_months(raw_seq,model,title,filename,x_label="Months",y_label="Va
 		y_forecasted.append(model.predict(x_input, verbose=0)[0][0])
 
 	y_forecasted.extend(next_6_months(raw_seq,model))
-	plt.figure()
+	plt.figure(figsize=(16.0,4.8))
 	plt.plot(t2, y_forecasted, label='Predictions')
 	plt.plot(t1, raw_seq[-12:], label='Observations')
 

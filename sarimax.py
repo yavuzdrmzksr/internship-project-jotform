@@ -70,14 +70,13 @@ def next_month(results):
 
 ###############################################################################
 
-def plot_last_year(y,results,title,filename,x_label="Months",y_label="Value"):
-    t = np.arange(12)
+def plot_last_year(y,results,title,filename,t,x_label="Months",y_label="Value"):
 
     # results = fit_model(y[:-12])
     pred=results.get_forecast(steps=12)
 
     y_forecasted = pred.predicted_mean
-    plt.figure()
+    plt.figure(figsize=(12.8,4.8))
     plt.plot(t, y_forecasted, label='Predictions')
     plt.plot(t, y[-12:], label='Observations')
 
@@ -98,13 +97,11 @@ def next_6_months(results):
 
 ###############################################################################
 
-def plot_next_6_months(y,results,title,filename,x_label="Months",y_label="Value"):
-    t1 = np.arange(12)
-    t2 = np.arange(18)
+def plot_next_6_months(y,results,title,filename,t1,t2,x_label="Months",y_label="Value"):
 
     pred=results.get_prediction(start=y.size-12,dynamic=False)
     y_forecasted = pred.predicted_mean
-    plt.figure()
+    plt.figure(figsize=(16.0,4.8))
     plt.plot(t2, np.append(y_forecasted,results.get_forecast(steps=6).predicted_mean,axis=0), label='Predictions')
     plt.plot(t1, y[-12:], label='Observations')
 

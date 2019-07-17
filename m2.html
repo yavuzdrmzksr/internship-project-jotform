@@ -1,7 +1,7 @@
 <h2>%MODEL%</h2>
 <h3>Test with Previous Data</h3>
 <p>%MODEL% can predict the values in last year with RMSE <b>%RMSE%</b>. Observations and predictions are plotted below.</p>
-<img src="%TESTIMG%">
+<img src="%TESTIMG%" width=800>
 <h3>Compare Last Value with Prediction</h3>
 <p>%MODEL% expected the value to be <b>%PREDICTION%</b>. Observed value is <b>%OBSERVATION%</b>. The difference is <b>%DIFFERENCE%(%PDIFFERENCE%%)</b>.
 <h3>Predictions of Next 6 Months</h3>
@@ -9,13 +9,13 @@
 <br>
 <table>
   <tr>
-    <th></th>
-    <th>MONTH 1</th>
-    <th>MONTH 2</th>
-    <th>MONTH 3</th>
-    <th>MONTH 4</th>
-    <th>MONTH 5</th>
-    <th>MONTH 6</th>
+    <th>Months</th>
+    <th>%MONTH0%</th>
+    <th>%MONTH1%</th>
+    <th>%MONTH2%</th>
+    <th>%MONTH3%</th>
+    <th>%MONTH4%</th>
+    <th>%MONTH5%</th>
   </tr>
   <tr>
     <th>Value</th>
@@ -28,4 +28,4 @@
   </tr>
 </table>
 <br>
-<img src="%PREDIMG%">
+<img src="%PREDIMG%" width=1000>
