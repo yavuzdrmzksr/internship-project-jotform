@@ -144,9 +144,9 @@ def mail_text(filename,m1="m1.html",m2="m2.html",m3="m3.html",currency_symbol=""
 ###############################################################################
 
 def send_mail(filename,currency_symbol=""):
-    sender_email = "tjotform@gmail.com"
-    receiver_email = "tjotform@gmail.com"
-    password = "xx1234xx"
+    sender_email = ####################
+    receiver_email = ####################
+    password = ####################
 
     message = MIMEMultipart("alternative")
 
